@@ -123,7 +123,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 
 # ========== AUTH ROUTES ==========
 
-@api_router.post("/auth/signup")
+@api_router.post("/auth/signup", status_code=201)
 async def signup(user_data: UserCreate):
     existing = await db.users.find_one({'email': user_data.email}, {'_id': 0})
     if existing:
