@@ -241,40 +241,49 @@ async def send_message(msg: ChatMessageCreate, current_user: dict = Depends(get_
         chat = LlmChat(
             api_key=os.environ.get('EMERGENT_LLM_KEY'),
             session_id=session_id,
-            system_message="""You are Datalyn, an expert business analyst AI. When users ask business questions, you must:
-1. Break down your analysis into clear reasoning steps
-2. State what data you examined
-3. Identify patterns or issues
-4. Provide actionable recommendations
+            system_message="""You are Datalyn, an expert business analyst AI. When analyzing business questions, provide structured reasoning.
 
-Format your response as JSON with this structure:
+CRITICAL: You MUST respond with ONLY valid JSON. No other text before or after.
+
+Required JSON structure:
 {
-  "summary": "Brief answer to the question",
+  "summary": "Direct answer in 1-2 sentences",
   "reasoning_steps": [
-    {"step": 1, "title": "Step title", "description": "What you did"},
-    {"step": 2, "title": "Step title", "description": "What you found"},
-    {"step": 3, "title": "Step title", "description": "Your recommendation"}
-  ],
-  "recommendation": "Clear action item"
+    {"step": 1, "title": "Data Analysis", "description": "Explain what business metrics you examined (MRR, churn, conversions, etc)"},
+    {"step": 2, "title": "Pattern Identification", "description": "Describe the trend or issue you found with specific numbers"},
+    {"step": 3, "title": "Root Cause", "description": "Explain why this is happening"},
+    {"step": 4, "title": "Recommendation", "description": "Provide specific actionable steps to address this"}
+  ]
 }
 
-Be specific and use realistic business metrics in your responses."""
+Use realistic SaaS metrics. Be specific with numbers and timeframes."""
         ).with_model("anthropic", "claude-sonnet-4-5-20250929")
         
         user_message = UserMessage(text=msg.message)
         ai_response = await chat.send_message(user_message)
         
+        # Try to extract JSON from response
+        import re
         try:
+            # Try direct JSON parse
             response_data = json.loads(ai_response)
-            content = response_data.get('summary', ai_response)
+            content = response_data.get('summary', '')
             reasoning_steps = response_data.get('reasoning_steps', [])
         except:
-            content = ai_response
-            reasoning_steps = [
-                {"step": 1, "title": "Analyzed query", "description": "Processed your business question"},
-                {"step": 2, "title": "Retrieved insights", "description": "Examined relevant metrics and patterns"},
-                {"step": 3, "title": "Generated recommendation", "description": "Formulated actionable advice based on data"}
-            ]
+            # Try to extract JSON from markdown code blocks or text
+            json_match = re.search(r'\{[\s\S]*"reasoning_steps"[\s\S]*\}', ai_response)
+            if json_match:
+                try:
+                    response_data = json.loads(json_match.group(0))
+                    content = response_data.get('summary', ai_response)
+                    reasoning_steps = response_data.get('reasoning_steps', [])
+                except:
+                    content = ai_response
+                    reasoning_steps = self._generate_fallback_steps(msg.message)
+            else:
+                # Generate intelligent fallback based on question
+                content = ai_response
+                reasoning_steps = self._generate_fallback_steps(msg.message)
         
         ai_msg = ChatMessage(
             session_id=session_id,
