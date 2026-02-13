@@ -1,0 +1,138 @@
+{
+  "identity": {
+    "name": "Datalyn",
+    "tagline": "Stop guessing. Start knowing.",
+    "description": "The AI-powered agentic business analyst that connects to your data and explains the 'why' behind the numbers.",
+    "aesthetic": "Linear-style Minimalist SaaS",
+    "emotional_tone": "Professional, Intelligent, Precise, Trustworthy, Agentic"
+  },
+  "typography": {
+    "font_family_sans": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "font_family_mono": "JetBrains Mono, Menlo, monospace",
+    "scale": {
+      "h1": "text-5xl md:text-6xl font-semibold tracking-tight leading-[1.1]",
+      "h2": "text-3xl md:text-4xl font-semibold tracking-tight",
+      "h3": "text-2xl font-semibold tracking-tight",
+      "body_lg": "text-lg text-slate-600 leading-relaxed",
+      "body": "text-base text-slate-600 leading-relaxed",
+      "small": "text-sm text-slate-500 font-medium",
+      "tiny": "text-xs text-slate-400 font-medium uppercase tracking-wider"
+    },
+    "rules": [
+      "Headings must strictly use 'tracking-tight' to achieve the premium SaaS look.",
+      "Never use pure black text. Use slate-900 for headings, slate-600 for body.",
+      "Use 'tabular-nums' for all data/metrics to ensure alignment."
+    ]
+  },
+  "colors": {
+    "theme": "light",
+    "mode_strategy": "Light mode default, subtle Dark mode toggle in settings",
+    "palette": {
+      "primary": {
+        "DEFAULT": "#0F172A",
+        "foreground": "#F8FAFC"
+      },
+      "secondary": {
+        "DEFAULT": "#F1F5F9",
+        "foreground": "#0F172A"
+      },
+      "accent": {
+        "DEFAULT": "#2563EB",
+        "foreground": "#FFFFFF"
+      },
+      "background": "#FFFFFF",
+      "subtle_background": "#F8FAFC",
+      "border": "#E2E8F0",
+      "muted": "#64748B",
+      "charts": [
+        "#10B981", 
+        "#3B82F6", 
+        "#F59E0B", 
+        "#F43F5E", 
+        "#8B5CF6"
+      ],
+      "semantic": {
+        "success": "#10B981",
+        "warning": "#F59E0B",
+        "error": "#EF4444",
+        "info": "#3B82F6"
+      }
+    }
+  },
+  "layout_strategies": {
+    "dashboard_grid": {
+      "type": "Bento",
+      "classes": "grid grid-cols-1 md:grid-cols-4 gap-4 p-4 md:p-6",
+      "rules": "Use col-span-1 for simple metrics, col-span-2 for charts, col-span-full for complex reports."
+    },
+    "landing_page": {
+      "hero_alignment": "center",
+      "max_width": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+      "spacing": "gap-12 md:gap-24"
+    },
+    "chat_interface": {
+      "structure": "flex flex-col h-[calc(100vh-4rem)]",
+      "message_width": "max-w-3xl mx-auto w-full"
+    }
+  },
+  "components": {
+    "buttons": {
+      "default": "h-10 px-4 py-2 rounded-md font-medium transition-all duration-200 active:scale-95",
+      "primary": "bg-slate-900 text-white hover:bg-slate-800 shadow-sm",
+      "secondary": "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 shadow-sm",
+      "ghost": "bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+    },
+    "cards": {
+      "style": "bg-white border border-slate-200 rounded-lg shadow-[0_1px_3px_0_rgb(0,0,0,0.1),0_1px_2px_-1px_rgb(0,0,0,0.1)] hover:shadow-md transition-shadow duration-200",
+      "padding": "p-6"
+    },
+    "inputs": {
+      "style": "flex h-10 w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    },
+    "chat_bubbles": {
+      "user": "bg-slate-100 text-slate-900 rounded-2xl rounded-tr-sm px-4 py-3",
+      "ai": "bg-white border border-slate-200 text-slate-800 rounded-2xl rounded-tl-sm px-6 py-4 shadow-sm w-full"
+    }
+  },
+  "visual_enhancers": {
+    "shadows": "Use diffuse, subtle shadows. Avoid harsh black shadows.",
+    "borders": "1px solid slate-200 is the primary divider. No thick borders.",
+    "glassmorphism": "Use sparingly. Only for sticky headers: bg-white/80 backdrop-blur-md border-b border-slate-200/50.",
+    "gradients": "AVOID colorful gradients. Use subtle 'slate-50 to white' gradients for backgrounds."
+  },
+  "image_urls": {
+    "hero_background": "https://images.unsplash.com/photo-1692889783742-7d99b124c402?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "testimonials": [
+      {
+        "url": "https://images.unsplash.com/photo-1659353221237-6a1cfb73fd90?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Professional man in suit"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1659353219150-377222056797?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Man holding tablet"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1633768230053-5ad67c4e1ff5?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "alt": "Woman working at table"
+      }
+    ],
+    "logo_instructions": "Use Lucide-React icons for integration logos. Do NOT use external images for logos as they look messy. Use 'Sheet', 'FileText', 'Slack', 'CreditCard' icons."
+  },
+  "instructions_to_main_agent": [
+    "1. IMPLEMENTATION ORDER: Auth Pages -> Dashboard Layout -> Dashboard Metrics -> AI Chat Interface -> Landing Page -> Integrations/Settings.",
+    "2. DASHBOARD: Ensure the dashboard is populated with realistic MOCK DATA. It must look 'lived in'. Use Recharts for the 30-day trend line.",
+    "3. AI CHAT: This is the core feature. Use a 'ChatProvider' context to manage state. The AI response must parse 'reasoning steps' if provided (you can mock the backend response structure to include steps). Display these steps in a collapsible 'Reasoning' accordion.",
+    "4. INTEGRATIONS: These are UI-only. Use a nice 'Switch' component (from shadcn) to toggle them.",
+    "5. LANDING PAGE: Must be pixel-perfect. Use the provided 'hero_background' as a subtle visual element, perhaps masked or placed on the right side.",
+    "6. USE SHADCN: Heavily rely on the installed shadcn components in /components/ui. Do not reinvent the wheel for Select, Dialog, Sheet, etc.",
+    "7. ICONS: Use 'lucide-react' for everything."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not center align the App container.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "Every interaction needs micro-animations (hover:text-slate-900, active:scale-95).",
+    "Use 'sonner' for toasts.",
+    "Components MUST use named exports.",
+    "Pages MUST use default exports."
+  ]
+}
