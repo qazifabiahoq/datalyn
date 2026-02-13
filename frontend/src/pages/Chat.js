@@ -127,28 +127,41 @@ export default function Chat() {
                       </div>
                       
                       {message.reasoning_steps && message.reasoning_steps.length > 0 && (
-                        <Accordion type="single" collapsible className="bg-white border border-slate-200 rounded-lg" data-testid="reasoning-accordion">
-                          <AccordionItem value="reasoning" className="border-none">
-                            <AccordionTrigger className="px-4 py-3 text-sm font-medium text-slate-900 hover:no-underline">
-                              View Reasoning Steps
-                            </AccordionTrigger>
-                            <AccordionContent className="px-4 pb-4">
-                              <div className="space-y-3">
-                                {message.reasoning_steps.map((step, stepIndex) => (
-                                  <div key={stepIndex} className="flex space-x-3" data-testid={`reasoning-step-${stepIndex}`}>
-                                    <div className="flex-shrink-0 w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center text-xs font-semibold">
-                                      {step.step}
+                        <div className="bg-slate-50 border border-slate-200 rounded-lg overflow-hidden">
+                          <Accordion type="single" collapsible data-testid="reasoning-accordion">
+                            <AccordionItem value="reasoning" className="border-none">
+                              <AccordionTrigger className="px-4 py-3 text-sm font-medium text-slate-900 hover:bg-slate-100 hover:no-underline transition-colors">
+                                <div className="flex items-center space-x-2">
+                                  <Sparkles className="w-4 h-4 text-blue-600" />
+                                  <span>View AI Reasoning Process ({message.reasoning_steps.length} steps)</span>
+                                </div>
+                              </AccordionTrigger>
+                              <AccordionContent className="px-4 pb-4 pt-2">
+                                <div className="space-y-4">
+                                  {message.reasoning_steps.map((step, stepIndex) => (
+                                    <div 
+                                      key={stepIndex} 
+                                      className="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow"
+                                      data-testid={`reasoning-step-${stepIndex}`}
+                                    >
+                                      <div className="flex space-x-3">
+                                        <div className="flex-shrink-0">
+                                          <div className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-semibold">
+                                            {step.step}
+                                          </div>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <h4 className="text-sm font-semibold text-slate-900 mb-1.5">{step.title}</h4>
+                                          <p className="text-sm text-slate-600 leading-relaxed">{step.description}</p>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="flex-1">
-                                      <h4 className="text-sm font-semibold text-slate-900 mb-1">{step.title}</h4>
-                                      <p className="text-sm text-slate-600 leading-relaxed">{step.description}</p>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
+                                  ))}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        </div>
                       )}
                     </div>
                   )}
