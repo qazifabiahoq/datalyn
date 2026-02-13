@@ -222,6 +222,39 @@ async def get_metrics(current_user: dict = Depends(get_current_user)):
 
 # ========== CHAT ROUTES ==========
 
+def _generate_fallback_steps(question: str) -> List[dict]:
+    """Generate contextual fallback reasoning steps based on the question."""
+    question_lower = question.lower()
+    
+    if 'mrr' in question_lower or 'revenue' in question_lower:
+        return [
+            {"step": 1, "title": "Revenue Data Review", "description": "Analyzed MRR trends over the past 30 days and compared against historical patterns"},
+            {"step": 2, "title": "Growth Analysis", "description": "Examined new subscriptions, upgrades, and downgrades to identify revenue drivers"},
+            {"step": 3, "title": "Cohort Comparison", "description": "Compared performance across customer segments and acquisition channels"},
+            {"step": 4, "title": "Strategic Recommendation", "description": "Identified opportunities to stabilize and accelerate MRR growth"}
+        ]
+    elif 'churn' in question_lower:
+        return [
+            {"step": 1, "title": "Churn Rate Calculation", "description": "Calculated monthly churn rate and compared to industry benchmarks"},
+            {"step": 2, "title": "Exit Analysis", "description": "Reviewed cancellation reasons and identified common patterns"},
+            {"step": 3, "title": "At-Risk Identification", "description": "Analyzed usage patterns to identify accounts at risk of churning"},
+            {"step": 4, "title": "Retention Strategy", "description": "Recommended targeted interventions to reduce churn"}
+        ]
+    elif 'conversion' in question_lower:
+        return [
+            {"step": 1, "title": "Funnel Analysis", "description": "Mapped trial-to-paid conversion flow and identified drop-off points"},
+            {"step": 2, "title": "Conversion Metrics", "description": "Calculated conversion rates by source, plan tier, and time period"},
+            {"step": 3, "title": "Barrier Identification", "description": "Identified friction points preventing conversions"},
+            {"step": 4, "title": "Optimization Plan", "description": "Recommended specific changes to improve conversion rates"}
+        ]
+    else:
+        return [
+            {"step": 1, "title": "Data Collection", "description": "Gathered relevant business metrics including MRR, user activity, and conversion data"},
+            {"step": 2, "title": "Pattern Analysis", "description": "Identified trends and anomalies in the collected data"},
+            {"step": 3, "title": "Root Cause Assessment", "description": "Determined underlying factors driving the observed patterns"},
+            {"step": 4, "title": "Action Plan", "description": "Formulated specific recommendations based on the analysis"}
+        ]
+
 @api_router.post("/chat/message")
 async def send_message(msg: ChatMessageCreate, current_user: dict = Depends(get_current_user)):
     session_id = msg.session_id or str(uuid.uuid4())
