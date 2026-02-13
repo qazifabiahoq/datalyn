@@ -2,11 +2,7 @@
 
 > Stop guessing. Start knowing your business.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Stack](https://img.shields.io/badge/stack-React%20%7C%20FastAPI%20%7C%20Claude%20Sonnet%204.5-informational)
-![Status](https://img.shields.io/badge/status-live-brightgreen)
 
----
 
 ## Screenshots
 
