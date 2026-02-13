@@ -312,11 +312,11 @@ Use realistic SaaS metrics. Be specific with numbers and timeframes."""
                     reasoning_steps = response_data.get('reasoning_steps', [])
                 except:
                     content = ai_response
-                    reasoning_steps = self._generate_fallback_steps(msg.message)
+                    reasoning_steps = _generate_fallback_steps(msg.message)
             else:
                 # Generate intelligent fallback based on question
                 content = ai_response
-                reasoning_steps = self._generate_fallback_steps(msg.message)
+                reasoning_steps = _generate_fallback_steps(msg.message)
         
         ai_msg = ChatMessage(
             session_id=session_id,
