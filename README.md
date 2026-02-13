@@ -2,19 +2,6 @@
 
 > Stop guessing. Start knowing your business.
 
-
-
-## Screenshots
-
-**Landing Page**
-![Landing Page](https://raw.githubusercontent.com/qazifabiahoq/datalyn/main/screenshots/landing.png)
-
-**Dashboard**
-![Dashboard](https://raw.githubusercontent.com/qazifabiahoq/datalyn/main/screenshots/dashboard.png)
-
-**AI Analyst**
-![AI Analyst](https://raw.githubusercontent.com/qazifabiahoq/datalyn/main/screenshots/ai-analyst.png)
-
 ---
 
 ## What is Datalyn?
