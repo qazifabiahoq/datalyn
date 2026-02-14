@@ -12,8 +12,9 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import bcrypt
 import jwt
-from emergentintegrations.llm.chat import LlmChat, UserMessage
+from groq import Groq
 import json
+import re
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -223,7 +224,6 @@ async def get_metrics(current_user: dict = Depends(get_current_user)):
 # ========== CHAT ROUTES ==========
 
 def _generate_fallback_steps(question: str) -> List[dict]:
-    """Generate contextual fallback reasoning steps based on the question."""
     question_lower = question.lower()
     
     if 'mrr' in question_lower or 'revenue' in question_lower:
@@ -271,10 +271,12 @@ async def send_message(msg: ChatMessageCreate, current_user: dict = Depends(get_
     await db.chat_messages.insert_one(user_msg_dict)
     
     try:
-        chat = LlmChat(
-            api_key=os.environ.get('EMERGENT_LLM_KEY'),
-            session_id=session_id,
-            system_message="""You are Datalyn, an expert business analyst AI. When analyzing business questions, provide structured reasoning.
+        groq_client = Groq(api_key=os.environ.get('GROQ_API_KEY'))
+
+        completion = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": """You are Datalyn, an expert business analyst AI. When analyzing business questions, provide structured reasoning.
 
 CRITICAL: You MUST respond with ONLY valid JSON. No other text before or after.
 
@@ -289,21 +291,17 @@ Required JSON structure:
   ]
 }
 
-Use realistic SaaS metrics. Be specific with numbers and timeframes."""
-        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
-        
-        user_message = UserMessage(text=msg.message)
-        ai_response = await chat.send_message(user_message)
-        
-        # Try to extract JSON from response
-        import re
+Use realistic SaaS metrics. Be specific with numbers and timeframes."""},
+                {"role": "user", "content": msg.message}
+            ]
+        )
+        ai_response = completion.choices[0].message.content
+
         try:
-            # Try direct JSON parse
             response_data = json.loads(ai_response)
             content = response_data.get('summary', '')
             reasoning_steps = response_data.get('reasoning_steps', [])
         except:
-            # Try to extract JSON from markdown code blocks or text
             json_match = re.search(r'\{[\s\S]*"reasoning_steps"[\s\S]*\}', ai_response)
             if json_match:
                 try:
@@ -314,7 +312,6 @@ Use realistic SaaS metrics. Be specific with numbers and timeframes."""
                     content = ai_response
                     reasoning_steps = _generate_fallback_steps(msg.message)
             else:
-                # Generate intelligent fallback based on question
                 content = ai_response
                 reasoning_steps = _generate_fallback_steps(msg.message)
         
